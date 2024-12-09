@@ -17,7 +17,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+//import androidx.compose.runtime.LaunchedEffec
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -26,7 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import kotlinx.coroutines.delay
 import com.example.s411203356.ui.theme.S411203356Theme
 
 class MainActivity : ComponentActivity() {
@@ -64,6 +66,17 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
     var currentColorIndex = remember { mutableStateOf(0) }
 
+    // 用來追蹤遊戲時間的狀態
+    val gameTime = remember { mutableStateOf(0) }
+
+    // 使用 Coroutine 每秒更新遊戲時間
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(1000)  // 每秒更新一次
+            gameTime.value += 1  // 遊戲時間增加
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -98,8 +111,9 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                     .background(Color.Black)
             )
 
+            // 顯示遊戲持續時間
             Text(
-                text = "遊戲持續時間 0 秒\n",
+                text = "遊戲持續時間 ${gameTime.value} 秒\n",
                 modifier = modifier
             )
 
